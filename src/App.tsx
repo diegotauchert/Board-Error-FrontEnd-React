@@ -1,21 +1,27 @@
-import React, { useState } from 'react';
-import { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import generateMessage, { Message } from './Api';
+import WrapperContent from './components/WrapperContent';
+import MainBoard from './components/MainBoard';
+import ControlButton from './components/ControlButton';
 
 const App: React.FC<{}> = () => {
-  const [messages, setMessages] = useState<Message[]>([]);
+  const [newMessage, setNewMessage] = useState<Message>({} as Message);
+  //const [messages, setMessages] = useState<Message[]>([]);
 
   useEffect(() => {
     const cleanUp = generateMessage((message: Message) => {
-      setMessages(oldMessages => [...oldMessages, message]);
+      setNewMessage(message);
+      //setMessage(oldMessages => [...oldMessages, message]);
     });
     return cleanUp;
-  }, [setMessages]);
+  }, [setNewMessage]);
 
   return (
-    <div>
-      {messages?.map?.(msg => <div key={msg?.message}>{msg?.message}</div>)}
-    </div>
+    <WrapperContent>
+      <h1>nuffsaid.com Coding Challenge</h1>
+      <ControlButton />
+      <MainBoard newMessage={newMessage} />
+    </WrapperContent>
   );
 }
 
