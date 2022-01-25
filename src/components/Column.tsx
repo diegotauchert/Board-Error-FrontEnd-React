@@ -23,8 +23,9 @@ const Column = ({label, messages, color}: IColumnType) => (
   <Grid item md={4} xs={12}>
     <Title>{label}</Title>
     <SubTitle>Count {messages.length}</SubTitle>
-    {messages?.map?.(msg => (
-      <Card key={msg?.message} color={color}>
+
+    {messages?.map?.((msg:Message, key:number) => (
+      <Card key={key} index={key} color={color} priority={msg?.priority}>
         {msg?.message}
       </Card>
     ))}

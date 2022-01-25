@@ -1,7 +1,9 @@
-import { ReactNode } from 'react';
+import { ReactNode, useContext } from 'react';
 import Paper from "@material-ui/core/Paper";
 import Button from "@material-ui/core/Button";
 import styled from 'styled-components'
+import { MessagesControlContext } from '../contexts/MessagesControlContext';
+import { PriorityEnum } from '../enum/PriorityEnum';
 
 const StyledCard = styled.div`
   background-color: ${(props) => props.color};
@@ -24,22 +26,33 @@ const StyledButtonCard = styled.div`
 `;
 
 type ICardType = {
+  index: number;
   color: string;
+  priority: PriorityEnum;
   children: ReactNode;
 }
 
-const Card = ({color, children}: ICardType) => (
-  <Paper elevation={1}>
-    <StyledCard color={color}>
-      {children}
+const Card = ({index, color, priority, children}: ICardType) => {
+  const { clearMessage } = useContext(MessagesControlContext);
 
-      <StyledButtonCard>
-        <Button variant="text" size="small" style={{textTransform: 'capitalize', fontWeight: '500'}}>
-          Clear
-        </Button>
-      </StyledButtonCard>
-    </StyledCard>
-  </Paper>
-)
+  return (
+    <Paper elevation={1}>
+      <StyledCard color={color}>
+        {children}
+
+        <StyledButtonCard>
+          <Button 
+            variant="text" 
+            size="small" 
+            style={{textTransform: 'capitalize', fontWeight: '500'}}
+            onClick={() => clearMessage(index, priority)}
+          >
+            Clear
+          </Button>
+        </StyledButtonCard>
+      </StyledCard>
+    </Paper>
+  )
+}
 
 export default Card

@@ -17,6 +17,9 @@ const GlobalStyle = createGlobalStyle`
     background-attachment: fixed;
     min-height: 100vh;
   }
+  iframe{
+    display: none;
+  }
   h1{
     font-size: 1.6rem;
     font-weight: 500;
