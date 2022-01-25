@@ -20,7 +20,7 @@ type IColumnType = {
 }
 
 const Column = ({label, messages, color}: IColumnType) => (
-  <Grid item md={4} xs={12}>
+  <Grid item md={4} xs={12} className="column">
     <Title>{label}</Title>
     <SubTitle>Count {messages.length}</SubTitle>
 

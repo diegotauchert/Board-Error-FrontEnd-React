@@ -1,9 +1,10 @@
-import { ReactNode, useContext } from 'react';
+import { ReactNode, useContext, useEffect, useState } from 'react';
 import Paper from "@material-ui/core/Paper";
 import Button from "@material-ui/core/Button";
 import styled from 'styled-components'
 import { MessagesControlContext } from '../contexts/MessagesControlContext';
 import { PriorityEnum } from '../enum/PriorityEnum';
+import { AnimateEnum } from '../enum/AnimateEnum';
 
 const StyledCard = styled.div`
   background-color: ${(props) => props.color};
@@ -34,9 +35,26 @@ type ICardType = {
 
 const Card = ({index, color, priority, children}: ICardType) => {
   const { clearMessage } = useContext(MessagesControlContext);
+  const [ animate, setAnimate ] = useState<AnimateEnum>()
+
+  const handleClick = (index:number, priority:number) => {
+    setAnimate(AnimateEnum.Clear);
+    setTimeout(() => {
+      clearMessage(index, priority)
+      setAnimate(undefined);
+    }, 400);
+  }
+
+  useEffect(() => {
+    setAnimate(AnimateEnum.Show);
+
+    setTimeout(() => {
+      setAnimate(undefined);
+    }, 400);
+  }, []);
 
   return (
-    <Paper elevation={1}>
+    <Paper elevation={1} className={animate}>
       <StyledCard color={color}>
         {children}
 
@@ -45,7 +63,7 @@ const Card = ({index, color, priority, children}: ICardType) => {
             variant="text" 
             size="small" 
             style={{textTransform: 'capitalize', fontWeight: '500'}}
-            onClick={() => clearMessage(index, priority)}
+            onClick={() => handleClick(index, priority)}
           >
             Clear
           </Button>
