@@ -14,7 +14,7 @@ const MainBoard = () => {
   
   return (
     <StyledBoard>
-      <Grid container spacing={16}>
+      <Grid container spacing={16} data-testid="main-grid">
         <Column label='Error Type 1' messages={colError} color="#F56236" />
         <Column label='Warning Type 2' messages={colWarn} color="#FCE788" />
         <Column label='Info Type 3' messages={colInfo} color="#88FCA3" />

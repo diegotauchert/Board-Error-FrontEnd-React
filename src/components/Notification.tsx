@@ -13,7 +13,7 @@ const Notification = () => {
   }
 
   useEffect(() => {
-    if(colError.length > 0){
+    if(colError?.length > 0){
       setOpen(true);
       setMessageNotification(colError[0]?.message);
       setTimeout(() => setOpen(false) , 2000);

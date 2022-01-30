@@ -3,6 +3,7 @@ import Button from "@material-ui/core/Button";
 
 type IButtonType = {
   name: string;
+  title?: string;
   onClick: (e:MouseEvent<HTMLElement>) => void;
 }
 
@@ -14,8 +15,8 @@ const ButtonStyles = {
   cursor: "pointer",
 }
 
-export const SingleButton = ({name, onClick}: IButtonType) => (
-  <Button variant="contained" style={ButtonStyles} onClick={onClick}>
+export const SingleButton = ({name, title, onClick}: IButtonType) => (
+  <Button role="button" title={title} variant="contained" style={ButtonStyles} onClick={onClick}>
     {name}
   </Button>
 );

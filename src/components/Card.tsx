@@ -26,6 +26,11 @@ const StyledButtonCard = styled.div`
   margin-top:2rem;
 `;
 
+interface animateParam {
+  class: AnimateEnum;
+  index?: number;
+}
+
 type ICardType = {
   index: number;
   color: string;
@@ -34,11 +39,11 @@ type ICardType = {
 }
 
 const Card = ({index, color, priority, children}: ICardType) => {
-  const { clearMessage } = useContext(MessagesControlContext);
-  const [ animate, setAnimate ] = useState<AnimateEnum>()
+  const { clearMessage, animateCard } = useContext(MessagesControlContext);
+  const [ animate, setAnimate ] = useState<animateParam | undefined>({} as animateParam)
 
-  const handleClick = (index:number, priority:number) => {
-    setAnimate(AnimateEnum.Clear);
+  const handleClickClear = (index:number, priority:number) => {
+    setAnimate({class: AnimateEnum.Clear, index});
     setTimeout(() => {
       clearMessage(index, priority)
       setAnimate(undefined);
@@ -46,24 +51,35 @@ const Card = ({index, color, priority, children}: ICardType) => {
   }
 
   useEffect(() => {
-    setAnimate(AnimateEnum.Show);
+    if(index === 0 && animateCard === priority){
+      setAnimate({class: AnimateEnum.Show, index});
+  
+      setTimeout(() => {
+        setAnimate(undefined);
+      }, 400);
+    }
 
-    setTimeout(() => {
-      setAnimate(undefined);
-    }, 400);
-  }, []);
+    return () => setAnimate(undefined);
+  }, [index, animateCard, priority]);
 
   return (
-    <Paper elevation={1} className={animate}>
+    <Paper 
+      elevation={1} 
+      className={index === 0 ? animate?.class : ''} 
+      title={children?.toString()}
+      data-testid="alert"
+      role="alert"
+    >
       <StyledCard color={color}>
         {children}
 
         <StyledButtonCard>
           <Button 
+            data-testid="buttonClearSingleCard"
             variant="text" 
             size="small" 
             style={{textTransform: 'capitalize', fontWeight: '500'}}
-            onClick={() => handleClick(index, priority)}
+            onClick={() => handleClickClear(index, priority)}
           >
             Clear
           </Button>

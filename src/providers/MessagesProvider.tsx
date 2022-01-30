@@ -9,6 +9,7 @@ type IMessageProviderType = {
 
 export default function MessagesProvider({children}: IMessageProviderType) {
   const [stop, setStop] = useState<boolean>(false)
+  const [animateCard, setAnimateCard] = useState<PriorityEnum>()
   
   const [colError, setColError] = useState<Message[]>([]);
   const [colWarn, setColWarn] = useState<Message[]>([]);
@@ -19,9 +20,11 @@ export default function MessagesProvider({children}: IMessageProviderType) {
   useEffect(() => {
     if(!stop){
       const cleanUp = generateMessage((message: Message) => {
-        message.priority === PriorityEnum.Error && setColError(oldMessages => [message, ...oldMessages]);
-        message.priority === PriorityEnum.Warn && setColWarn(oldMessages => [message, ...oldMessages]);
-        message.priority === PriorityEnum.Info && setColInfo(oldMessages => [message, ...oldMessages]);
+        message.priority === PriorityEnum.Error && setColError((oldMessages:Message[]) => [message, ...oldMessages]);
+        message.priority === PriorityEnum.Warn && setColWarn((oldMessages:Message[]) => [message, ...oldMessages]);
+        message.priority === PriorityEnum.Info && setColInfo((oldMessages:Message[]) => [message, ...oldMessages]);
+
+        setAnimateCard(message.priority);
       });
       return cleanUp;
     }
@@ -36,19 +39,19 @@ export default function MessagesProvider({children}: IMessageProviderType) {
   const clearMessage = useCallback((index: number, priority: PriorityEnum) => {
     switch(priority){
       case PriorityEnum.Error:
-        setColError(oldMessages => oldMessages.filter((msg: Message, key: number) => key !== index));
+        setColError((oldMessages:Message[]) => oldMessages.filter((msg: Message, key: number) => key !== index));
         break;
       case PriorityEnum.Warn:
-        setColWarn(oldMessages => oldMessages.filter((msg: Message, key: number) => key !== index));
+        setColWarn((oldMessages:Message[]) => oldMessages.filter((msg: Message, key: number) => key !== index));
         break;
       case PriorityEnum.Info:
-        setColInfo(oldMessages => oldMessages.filter((msg: Message, key: number) => key !== index));
+        setColInfo((oldMessages:Message[]) => oldMessages.filter((msg: Message, key: number) => key !== index));
         break;
     }
   }, [])
 
   return (
-    <MessagesControlContext.Provider value={{stopMessages, stop, colError, colWarn, colInfo, clearMessages, clearMessage}}>
+    <MessagesControlContext.Provider value={{stopMessages, stop, colError, colWarn, colInfo, clearMessages, clearMessage, animateCard}}>
       {children}
     </MessagesControlContext.Provider>
   )

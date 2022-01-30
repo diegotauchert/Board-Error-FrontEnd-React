@@ -4,6 +4,7 @@ import { PriorityEnum } from "../enum/PriorityEnum";
 
 interface IMessagesControlContext {
   stop: boolean,
+  animateCard: PriorityEnum | undefined;
   stopMessages: () => void,
   colError: Message[],
   colWarn: Message[],

@@ -21,8 +21,8 @@ const ControlButton = () => {
 
   return (
   <StyledControlButton>
-    <StyledButton name="Clear" onClick={handleClickClear} />
-    <StyledButton name={stop ? 'Start' : 'Stop'} onClick={stopMessages} />
+    <StyledButton title="Clear All" data-testid="buttonClear" name="Clear" onClick={handleClickClear} />
+    <StyledButton title={`${stop ? 'Start' : 'Stop'} Messages`} data-testid="buttonPlay" name={stop ? 'Start' : 'Stop'} onClick={stopMessages} />
   </StyledControlButton>
 )};
 
